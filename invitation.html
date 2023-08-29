@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <title>Web Madrassa | Invitation</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="/css/login.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <script src="/scripts/invitation.js" defer></script>
+</head>
+<body>
+<div class="background">
+  <div class="shape"></div>
+  <div class="shape"></div>
+</div>
+<div class="form">
+  <h3>Créer votre compte</h3>
+  <h5 id="greet-name">Récupération des informations d'invitation...</h5>
+
+  <input type="password" placeholder="Mot de passe" id="password-creation">
+
+  <input type="password" placeholder="Confirmer le mot de passe" id="password-confirm">
+  <button id="createAccount">Créer le compte</button>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+</body>
+</html>

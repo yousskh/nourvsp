@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Association Nour</title>
+    <link rel="stylesheet" href="/css/accueil.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;500;600;700&display=swap">
+    <script src="/scripts/accueil.js" defer></script>
+</head>
+<body>
+    <div id="main-frame">
+        <div id="entete">
+            <div id="gauche-entete">
+                <img id="m-icon" src="/svg/madrassa-icon.svg" alt="icône madrassa">
+            </div>
+            <div id="centre-entete">
+                <h1 class="petit-titre" id="presentation">PRÉSENTATION</h1>
+                <h1 class="petit-titre" id="actus">ACTUALITÉS</h1>
+                <h1>ASSOCIATION NOUR</h1>
+                <h1 class="petit-titre" id="contact">CONTACT</h1>
+                <h1 class="petit-titre" id="apropos">À PROPOS</h1>
+            </div>
+            <div id="droite-entete">
+                <button id="login" class="top-button">Menu</button>
+            </div>
+        </div>
+        <div id="corps">
+
+            <div id="presentation-page" class="page">
+                <div id="sombre">
+                    <h1 class="clair">Centre culturel de Villers-Saint-Paul</h1>
+                </div>
+                <!-- <div class="textbox">
+                    Web Madrassa permet de faciliter la gestion de la madrassa grâce à plusieurs outils, destinés à l'administration
+                    comme aux parents. Contactez les professeurs, accédez à l'emploi du temps, consultez les résultats de votre
+                    enfant, suivez l'actualité / les dernières infos de la madrassa et plus encore. <br><br>
+                    Pour commencer, connectez-vous à l'aide de vos identifiants fournis par la madrassa : cliquez sur Menu en haut
+                    à droite de la page. Si vous les avez perdus, vous trouverez un bouton "identifiants perdus" dans la page de connexion.
+                </div> -->
+            </div>
+
+            <div id="actus-page" class="page">
+
+            </div>
+
+            <div id="contact-page" class="page">
+
+            </div>
+
+            <div id="apropos-page" class="page">
+
+            </div>
+
+        </div>
+    </div>
+
+    <div id="use-error">
+        <img id="mobile-error" src="/svg/mobile-error.svg" alt="icône erreur mobile">
+        <p>Impossible d'utiliser Web Madrassa sur mobile.</p>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>

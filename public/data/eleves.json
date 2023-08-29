@@ -1,0 +1,42 @@
+{
+    "length": 6,
+    "eleves": {
+        "0": {
+            "prenom": "Youssef",
+            "nom": "Khemira",
+            "age": "19",
+            "classe": "2"
+        },
+        "1": {
+            "prenom": "Samir",
+            "nom": "Ifeiefhpi",
+            "age": "80",
+            "classe": "3"
+        },
+        "2": {
+            "prenom": "Zyed",
+            "nom": "Kodzfr",
+            "age": "2",
+            "classe": "8"
+        },
+        "3": {
+            "prenom": "Monir",
+            "nom": "Khemira",
+            "age": "49",
+            "classe": "7"
+        },
+        "4": {
+            "prenom": "Nanana",
+            "nom": "lsll",
+            "age": "19",
+            "classe": "2"
+        },
+        "5": {
+            "prenom": "jawad",
+            "nom": "khemira",
+            "age": "18",
+            "classe": "1"
+        },
+        "undefined": {}
+    }
+}

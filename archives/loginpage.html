@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <script src="/scripts/login.js" defer></script>
+    <link rel="stylesheet" href="/css/loginpage.css">
+</head>
+<body>
+    <div class="centered full" id="full-container">
+        <div class="centered" id="container-login">
+            <div class="centered" id="entete-login">
+                <h1>Connexion</h1>
+            </div>
+            <div class="centered" id="corps-login">
+                <input type="text" id="username">
+                <label for="username">Username</label>
+                <input type="text" id="pwd">
+                <label for="pwd">Password</label>
+                <button id="checkCredentials">Connexion</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
