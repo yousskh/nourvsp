@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const fs = require('fs');
-const PORT = process.env.PORT || 443;
+const PORT = process.env.PORT || 3000;
 
 const bcrypt = require ('bcrypt');
 const saltRounds = 10;
