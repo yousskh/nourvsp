@@ -11,7 +11,7 @@ const bcrypt = require ('bcrypt');
 const saltRounds = 10;
 
 //const { auth, requiresAuth } = require('express-openid-connect');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     host: 'nourvsp.online',
