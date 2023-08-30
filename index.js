@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const fs = require('fs');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 const bcrypt = require ('bcrypt');
 const saltRounds = 10;
@@ -26,9 +26,9 @@ const transporter = nodemailer.createTransport({
 
 const con = mysql.createConnection({
     host: "localhost",
-    user: "root",
-    password: "",
-    database: "webmds",
+    user: process.env.DBUSER,
+    password: process.env.DBPWD,
+    database: "nourvsp1_nourvsp",
     multipleStatements: true
 });
 
