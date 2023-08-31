@@ -12,6 +12,14 @@ const saltRounds = 10;
 
 //const { auth, requiresAuth } = require('express-openid-connect');
 const mysql = require('mysql2');
+const con = mysql.createConnection({
+    host: "localhost",
+    user: "nourvsp1_yousskh",
+    password: "youkhe2004",
+    database: "nourvsp1_nourvsp",
+    multipleStatements: true
+});
+
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     host: 'nourvsp.online',
@@ -21,15 +29,6 @@ const transporter = nodemailer.createTransport({
         user: 'invitation@nourvsp.online',
         pass: 'nourAssoMail'
     }
-});
-
-
-const con = mysql.createConnection({
-    host: "localhost",
-    user: "nourvsp1_yousskh",
-    password: "youkhe2004",
-    database: "nourvsp1_nourvsp",
-    multipleStatements: true
 });
 
 con.connect(function(err) {
