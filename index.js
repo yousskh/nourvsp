@@ -14,8 +14,8 @@ const saltRounds = 10;
 const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
-    user: "nourvsp1_yousskh",
-    password: "youkhe2004",
+    user: "nourvsp1_index",
+    password: "nourAssoMail",
     database: "nourvsp1_nourvsp",
     multipleStatements: true
 });
