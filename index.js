@@ -25,9 +25,9 @@ const transporter = nodemailer.createTransport({
 
 
 const con = mysql.createConnection({
-    host: "localhost",
-    user: process.env.DBUSER,
-    password: process.env.DBPWD,
+    host: "localhost:3306",
+    user: "yousskh",
+    password: "youkhe2004",
     database: "nourvsp1_nourvsp",
     multipleStatements: true
 });
