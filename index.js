@@ -13,7 +13,7 @@ const saltRounds = 10;
 //const { auth, requiresAuth } = require('express-openid-connect');
 const mysql = require('mysql');
 const con = mysql.createConnection({
-    host: "localhost",
+    host: "212.71.245.237",
     user: "nourvsp1_index",
     password: "nourAssoMail",
     database: "nourvsp1_nourvsp",
