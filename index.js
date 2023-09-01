@@ -10,15 +10,14 @@ const PORT = process.env.PORT || 3000;
 const bcrypt = require ('bcrypt');
 const saltRounds = 10;
 
-//const { auth, requiresAuth } = require('express-openid-connect');
-const mysql = require('mysql');
+/*const mysql = require('mysql');
 const con = mysql.createConnection({
-    host: "212.71.245.237",
+    host: "localhost",
     user: "nourvsp1_index",
     password: "nourAssoMail",
     database: "nourvsp1_nourvsp",
     multipleStatements: true
-});
+});*/
 
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
@@ -31,21 +30,10 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-con.connect(function(err) {
+/*con.connect(function(err) {
     if (err) throw err;
     console.log("Webmds database connected.");
-});
-
-/*const config = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: '4afa79e266184695010ab1b3eb813f9c3d7b6bd59af8f4efb074186c26ebff7b',
-    baseURL: 'http://localhost:3000',
-    clientID: 'CjalkC5AOI398kJsazQJa2FAg7a6YKqt',
-    issuerBaseURL: 'https://dev-webmds.eu.auth0.com'
-};
-
-app.use(auth(config)); */
+});*/
 
 app.use(express.static(__dirname + '/public'));
 
