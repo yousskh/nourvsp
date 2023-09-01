@@ -9,15 +9,17 @@ const PORT = process.env.PORT || 3000;
 
 const bcrypt = require ('bcrypt');
 const saltRounds = 10;
+
 console.log('before mysql')
-/*const mysql = require('mysql');
+const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
     user: "nourvsp1_index",
     password: "nourAssoMail",
     database: "nourvsp1_nourvsp",
     multipleStatements: true
-});*/
+});
+
 console.log('before mailer')
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
@@ -30,11 +32,13 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-/*con.connect(function(err) {
+console.log('before con connect')
+con.connect(function(err) {
     if (err) throw err;
     console.log("Webmds database connected.");
-});*/
-console.log('before express static')
+});
+
+/*console.log('before express static')
 app.use(express.static(__dirname + '/public'));
 
 console.log('before app get')
@@ -155,6 +159,8 @@ io.on('connection', (socket) => {
         res(null, sett);
     });*/
 
+
+/* reprendre d'ici
     socket.on("checkDir", async function (data, res) {
         if (fs.existsSync(data)) {
             res(null);
@@ -564,6 +570,8 @@ function getElevesList(data) {
     }).join('\n')
 }*/
 
+/*reprendre d'ici
+
 function clearAuth() {
     let sql = "DELETE FROM adminauth WHERE date < DATE_SUB(NOW(), INTERVAL '30' MINUTE)";
     con.query(sql, function (err) {
@@ -616,4 +624,4 @@ function randId() {
         str += characters[Math.floor(Math.random() * 16)]
     }
     return str;
-}
+} */
