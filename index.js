@@ -12,7 +12,7 @@ const saltRounds = 10;
 
 const mysql = require('mysql');
 const con = mysql.createConnection({
-    host: "localhost",
+    host: "212.71.245.237",
     user: "nourvsp1_index",
     password: "nourAssoMail",
     database: "nourvsp1_nourvsp",
@@ -31,7 +31,7 @@ const transporter = nodemailer.createTransport({
 });
 
 con.connect(function(err) {
-    if (err) throw JSON.stringify(err);
+    if (err) throw err;
     console.log("Webmds database connected.");
 });
 
