@@ -16,6 +16,7 @@ const con = mysql.createConnection({
     host: "localhost",
     user: "nourvsp1_index",
     password: "nourAssoMail",
+    database: "nourvsp1_nourvsp",
     multipleStatements: true
 });
 
