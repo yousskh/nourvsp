@@ -11,7 +11,7 @@ const bcrypt = require ('bcrypt');
 const saltRounds = 10;
 
 console.log('before mysql')
-const mysql = require('mysql2');
+const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
     user: "nourvsp1_index",
