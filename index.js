@@ -33,7 +33,7 @@ const transporter = nodemailer.createTransport({
 
 console.log('before con connect')
 con.connect(function(err) {
-    if (err) throw err;
+    if (err) throw JSON.stringify(err);
     console.log("Webmds database connected.");
 });
 
