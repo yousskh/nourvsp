@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 3000;
 const bcrypt = require ('bcrypt');
 const saltRounds = 10;
 
-console.log('before mysql')
 const mysql = require('mysql');
 const con = mysql.createConnection({
     host: "localhost",
@@ -20,7 +19,6 @@ const con = mysql.createConnection({
     multipleStatements: true
 });
 
-console.log('before mailer')
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     host: 'nourvsp.online',
@@ -32,16 +30,13 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-console.log('before con connect')
 con.connect(function(err) {
     if (err) throw JSON.stringify(err);
     console.log("Webmds database connected.");
 });
 
-console.log('before express static')
 app.use(express.static(__dirname + '/public'));
 
-console.log('before app get')
 app.get('/adminmenu', (req, res) => {
     let authkey = req.query.authkey;
     if (authkey) {
@@ -81,8 +76,6 @@ server.listen(PORT, () => {
     console.log(`Server started | listening on ${PORT}`);
 });
 
-
-console.log('before io on')
 io.on('connection', (socket) => {
     console.log("[CONNECTION] New user connected");
 
