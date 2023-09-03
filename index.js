@@ -503,8 +503,9 @@ function transformUserInfos(data) {
     let type = data[0]["type"];
     let statut = data[0]["statut"];
     let inviteid = data[0]["inviteid"];
+    let permissionLevel = data[0]["permissionLevel"];
     let id = data[0]["id"];
-    return [type, statut, inviteid, id];
+    return [type, statut, inviteid, permissionLevel, id];
 }
 
 
