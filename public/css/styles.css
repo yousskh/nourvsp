@@ -24,6 +24,8 @@ body {
     border-bottom: lightgray 1px solid;
     align-items: center;
     box-shadow: rgb(200, 200, 200) 0 3px 5px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #m-icon {
@@ -34,11 +36,11 @@ body {
 
 h1 {
     padding: 8px 8px 8px 0;
+    margin-right: 4px;
     color: #3c4043;
     font-family: "Nunito", Helvetica, sans-serif;
     font-size: 24px;
     font-weight: 500;
-    min-width: 170px;
     width: fit-content;
 }
 
@@ -94,7 +96,7 @@ h1 {
 
 .mini-button:hover {
     background-color: lightgray;
-    box-shadow: gray 1px 1px 3px;
+    box-shadow: rgb(128, 128, 128) 1px 1px 3px;
 }
 
 .mini-button:active {
@@ -113,9 +115,9 @@ h1 {
     width: 100%;
     height: calc(100% - 20px);
     margin: 10px;
-    border: gray 1px solid;
+    border: rgb(128, 128, 128) 1px solid;
     border-radius: 8px;
-    box-shadow: gray 0 8px 15px;
+    box-shadow: rgb(128, 128, 128) 0 8px 15px;
     overflow: hidden;
 }
 
@@ -123,7 +125,7 @@ h3, h4 {
     color: #3c4043;
     font-family: "Nunito", Helvetica, sans-serif;
     font-weight: bold;
-    border: gray 1px solid;
+    border: rgb(128, 128, 128) 1px solid;
     width: fit-content;
     height: fit-content;
     border-bottom-right-radius: 8px;
@@ -166,7 +168,7 @@ h5, input, .inputlabel, select {
     width: 100%;
     margin: 10px;
     padding: 10px;
-    border: gray 1px solid;
+    border: rgb(128, 128, 128) 1px solid;
     border-radius: 8px;
 }
 
@@ -241,7 +243,7 @@ h5, input, .inputlabel, select {
 .eleveListElt, .usersListElt, .classeListElt {
     font-size: 16px;
     width: auto;
-    border: gray 1px dotted;
+    border: rgb(128, 128, 128) 1px dotted;
     border-radius: 8px;
     padding: 8px;
     margin: 8px;
@@ -274,7 +276,7 @@ h5, input, .inputlabel, select {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: gray 1px solid;
+    border: rgb(128, 128, 128) 1px solid;
     width: 40%;
     aspect-ratio: 3/4;
     margin-right: 10px;
