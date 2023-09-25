@@ -26,6 +26,7 @@ body {
 }
 
 .top-button {
+    z-index: 3;
     margin: 0 24px 0 0;
     background: none;
     padding: 1vh 1vw;
@@ -35,14 +36,14 @@ body {
     font-weight: 400;
     width: fit-content;
     cursor: pointer;
-    border: gray 1px dotted;
+    border: rgb(128, 128, 128) 1px dotted;
     transition: all 400ms cubic-bezier(.23, 1, 0.32, 1);
 }
 
 .top-button:hover {
     background-color: #3c4043;
     color: white;
-    box-shadow: gray 1px 1px 3px;
+    box-shadow: rgb(128, 128, 128) 1px 1px 3px;
 }
 
 
@@ -61,27 +62,29 @@ body {
 
 #gauche-entete {
     display: flex;
-    width: 20vw;
+    width: 100%;
     justify-content: left;
 }
 
 #centre-entete {
-    width: 60vw;
+    position: absolute;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 #droite-entete {
+    position: absolute;
     display: flex;
-    width: 20vw;
+    width: 100%;
     justify-content: right;
 }
 
 #m-icon {
     margin-left: 32px;
     width: 40px;
-    height: auto;
+    height: 40px;
 }
 
 h1 {
@@ -94,9 +97,12 @@ h1 {
     font-weight: 500;
     letter-spacing: 7px;
     width: fit-content;
+    white-space: nowrap;
 }
 
 .petit-titre {
+    z-index: 2;
+    white-space: nowrap;
     cursor: pointer;
     font-size: 14px;
     letter-spacing: 3px;
@@ -104,7 +110,7 @@ h1 {
 }
 
 .petit-titre:hover {
-    color: gray;
+    color: rgb(128, 128, 128);
 }
 
 #corps {

@@ -14,13 +14,15 @@
   <div class="shape"></div>
 </div>
 <div class="form">
-  <h3>Créer votre compte</h3>
+  <form id="loginForm">
+  <h3>Association Nour</h3>
   <h5 id="greet-name">Récupération des informations d'invitation...</h5>
 
-  <input type="password" placeholder="Mot de passe" id="password-creation">
+    <label for="password-creation"></label><input type="password" placeholder="Mot de passe" id="password-creation">
 
-  <input type="password" placeholder="Confirmer le mot de passe" id="password-confirm">
+    <label for="password-confirm"></label><input type="password" placeholder="Confirmer le mot de passe" id="password-confirm">
   <button id="createAccount">Créer le compte</button>
+  </form>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>

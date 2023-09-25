@@ -52,6 +52,7 @@
                 </div>
             </div>
 
+
             <div id="board">
 
                 <div id="inscriptions" class="page-frame">
@@ -65,13 +66,13 @@
                             <div class="hl-fit-v">
 
                                 <div class="vertical-layout-right">
-                                    <h5>Prénom*</h5>
-                                    <input id="i-prenom" type="text" placeholder="Texte">
-                                    <label class="inputlabel" for="i-prenom"></label>
-
                                     <h5>Nom*</h5>
                                     <input id="i-nom" type="text" placeholder="Texte">
                                     <label class="inputlabel" for="i-nom"></label>
+
+                                    <h5>Prénom*</h5>
+                                    <input id="i-prenom" type="text" placeholder="Texte">
+                                    <label class="inputlabel" for="i-prenom"></label>
 
                                     <h5>Âge*</h5>
                                     <input id="i-age" type="text" placeholder="Nombre">
@@ -149,13 +150,19 @@
                                             <h5 id="a-nom" class="a-text">Nom : </h5>
                                             <h5 id="a-age" class="a-text">Âge : </h5>
                                             <h5 id="a-classe" class="a-text">Classe : </h5>
-                                            <h5 id="a-mail" class="a-text">Mail : </h5>
-                                            <h5 id="a-tel" class="a-text">Téléphone : </h5>
                                             <h5 id="a-id" class="a-text">ID : </h5>
                                         </div>
                                         <div id="eleve-photo">
                                             Aucune photo
                                         </div>
+                                    </div>
+                                    <hr class="ligne">
+                                    <div class="vertical-layout">
+                                        <h5 id="a-prenomparent" class="a-text">Prénom parent : </h5>
+                                        <h5 id="a-mail" class="a-text">Mail : </h5>
+                                        <h5 id="a-tel" class="a-text">Téléphone : </h5>
+                                        <h5 id="a-adresse" class="a-text">Adresse : </h5>
+
                                     </div>
                                     <hr class="ligne">
                                     <div class="hl-fit">
@@ -177,6 +184,9 @@
                                     <div class="hl-fit">
                                         <button class="mini-button" id="deleteEleveButton">Supprimer l'élève</button>
                                     </div>
+                                    <div class="hl-fit">
+                                        <button class="mini-button" id="changeClasseButton">Changer de classe</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -190,12 +200,25 @@
                         <div id="menu-classes" class="fct-frame">
                             <h4>Gestion des classes</h4>
                             <div class="hl-fit">
+                                <img id="addClasse" src="/svg/add-circle.svg" alt="ajouter classe">
                                 <h5>Ajouter une nouvelle classe : </h5>
                                 <input id="classeName" type="text" class="textbox" placeholder="Nom de la classe">
                                 <label for="classeName" class="inputlabel"></label>
                                 <button id="createClasse" class="mini-button">Créer la classe</button>
                             </div>
+
+                            <hr class="ligne">
                             <div id="clist" class="vertical-scroll"></div>
+                        </div>
+
+                        <div id="aucun-apercu3" class="fct-frame">
+                            <h4>Informations sur la classe</h4>
+                            <p class="aucun-apercu">Sélectionner une classe</p>
+                        </div>
+
+                        <div id="classeChargement" class="fct-frame">
+                            <h4>Informations sur la classe</h4>
+                            <p class="aucun-apercu">Chargement en cours...</p>
                         </div>
 
                         <div id="apercu-classe" class="fct-frame">
@@ -231,7 +254,6 @@
                             </div>
 
                             <div id="celist" class="vertical-scroll" style="border: #3c4043 1px solid; margin: 4px 4px 4px 0" ></div>
-
                         </div>
 
                     </div>
@@ -262,7 +284,7 @@
                                     <label class="inputlabel" for="acctype"></label>
                                     <button id="sendinvite" class="mini-button" role="button">Envoyer</button>
                                 </div>
-                                <textarea id="i-customMail" placeholder='Texte personnalisé (laisser vide pour le texte par défaut). Utiliser "[lien]" pour insérer le lien à cet endroit.' cols="40" rows="20"></textarea>
+                                <textarea id="i-customMail" placeholder='Texte personnalisé (laisser vide pour le texte par défaut). Utiliser "[lien]" pour insérer le lien d&#39invitation à cet endroit.' cols="40" rows="20"></textarea>
                                 <label class="inputlabel" for="i-customMail"></label>
                             </div>
 
@@ -291,6 +313,7 @@
                                             <label class="inputlabel" for="editUserValue"></label>
                                             <button class="mini-button" id="editUserValueButton">Modifier</button>
                                         </div>
+                                        <button class="mini-button" id="updatePassword">Réinitialiser mot de passe</button>
                                     </div>
                             </div>
 
@@ -400,16 +423,16 @@
         </div>
 
 
-        <div id="elevePopup">
-            <div class="fct-frame" id="fctEditEleve">
+        <div id="elevePopup" class="popup">
+            <div class="fct-frame fctEditPopup" id="fctEditEleve">
                 <div class="horizontal-layout">
                     <h4>Paramètres élève</h4>
                     <div class="hl-fit-v horizontal-layout-right">
-                        <img id="closePopup" src="/svg/close.svg" alt="Fermer" onclick="document.getElementById('elevePopup').style.display = 'none'"></div>
+                        <img class="closePopup" src="/svg/close.svg" alt="Fermer" onclick="document.getElementById('elevePopup').style.display = 'none'"></div>
                 </div>
                 <h5>Élève : <span id="popupName"></span></h5>
-                <h5 class="error">Paramètres indisponibles</h5>
-                <!-- <div class="popupFct vertical-layout" id="popupButtons">
+                <!-- <h5 class="error">Paramètres indisponibles</h5> !-->
+                <div class="popupFct vertical-layout" id="popupButtons">
                     <button id="moveEleve" class="button margin">Déplacer vers une autre classe</button>
                     <button class="button margin">Supprimer l'élève</button>
                 </div>
@@ -417,9 +440,23 @@
                     <input id="popupClasseName" class="" type="text" placeholder="Nom de la classe">
                     <label class="inputlabel" for="popupClasseName"></label>
                     <button id="moveEleveConfirm" class="button margin">Déplacer</button>
-                </div> !-->
+                </div>
             </div>
         </div>
+
+        <div id="classePopup" class="popup">
+            <div class="fct-frame fctEditPopup" id="fctChangeClasse">
+                <div class="horizontal-layout">
+                    <h4>Modifier la classe</h4>
+                    <div class="hl-fit-v horizontal-layout-right">
+                        <img class="closePopup" src="/svg/close.svg" alt="Fermer" onclick="document.getElementById('classePopup').style.display = 'none'"></div>
+                </div>
+                <h5 id="changeClasseTitre">Choisir une nouvelle classe pour [prenom] [nom] :</h5>
+                <hr class="ligne">
+                <div id="popupList" class="vertical-scroll"></div>
+            </div>
+        </div>
+
 
     </div>
     <div id="use-error">

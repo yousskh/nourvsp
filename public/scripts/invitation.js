@@ -9,7 +9,7 @@ socket.emit("checkCreationId", id, function (err, responseData) {
     if (err) {
         window.location.href = "/";
     } else {
-        document.getElementById("greet-name").textContent = `Vous avez été invité à rejoindre Web Madrassa. Choisissez un mot de passe pour créer votre compte. Votre nom d'utilisateur est : ${responseData}`;
+        document.getElementById("greet-name").textContent = `Vous avez été invité à créer un compte . Choisissez un mot de passe pour créer votre compte. Votre nom d'utilisateur est : ${responseData}`;
     }
 });
 

@@ -1,9 +1,25 @@
+let appVersion = '2.0.1'
+let dateLastUpdate = '26/09/2023'
+
+
+const navBar = document.querySelector("nav"),
+    menuBtns = document.querySelectorAll(".menu-icon"),
+    overlay = document.querySelector(".overlay");
+menuBtns.forEach((menuBtn) => {
+    menuBtn.addEventListener("click", () => {
+        navBar.classList.toggle("open");
+    });
+});
+overlay.addEventListener("click", () => {
+    navBar.classList.remove("open");
+});
+
 let socket = io();
-
-
 
 let moreListInfos = false;
 let key = getWithExpiry("authkey");
+const openingTime = new Date();
+
 preSettings()
 function preSettings() {
     if (key) {
@@ -19,16 +35,22 @@ function preSettings() {
             if (err) {
                 alert(err);
             } else {
-                switch (responseData) {
+                document.getElementById("loggedUsername").textContent = `Connecté en tant que : ${responseData[1]}`;
+                switch (responseData[0]) {
                     case "9":
                         document.getElementById("dvpMenu").style.display = "block";
                         document.getElementById("b-users").style.display = "block";
+                        document.getElementById("param-avances").style.display = "block";
+                        break;
+                    case "8":
+                        document.getElementById("param-avances").style.display = "block";
                         break;
                     default:
                         break;
                 }
             }
         });
+
     } else {
         window.location.href = "/";
     }
@@ -47,6 +69,8 @@ function preSettings() {
         }
 
     }
+
+
     socket.emit("checkStoreSettings", {}, function (err, responseData) {
         if (err) {
             alert(err);
@@ -62,7 +86,19 @@ function preSettings() {
             }
         }
     });
+
+    socket.emit("getApercuInfos", {}, function (err, resp) {
+        if (err) {
+            alert(JSON.stringify(err));
+        } else {
+            document.getElementById("infosNbEleves").textContent = resp[0];
+            document.getElementById("infosNbClasses").textContent = resp[1];
+            document.getElementById("infosNbusers").textContent = resp[2];
+        }
+    })
 }
+
+
 
 setInterval(checkStatus, 3000);
 
@@ -86,6 +122,10 @@ function hidePages() {
             menus[i].style.display = "none"
     }
 }
+
+document.getElementById("title").addEventListener("click", function (){
+    hidePages();
+    document.getElementById("infos-generales").style.display = "block"; });
 
 document.getElementById("b-inscriptions").addEventListener("click", function (){
     hidePages();
@@ -345,6 +385,43 @@ document.getElementById("deleteEleveButton").addEventListener("click", function 
     }
 });
 
+document.getElementById("changeClasseButton").addEventListener("click", function () {
+    let prenom = document.getElementById("a-prenom").textContent.split(" ")[2];
+    let nom = document.getElementById("a-nom").textContent.split(" ")[2];
+    let id = document.getElementById("a-id").textContent.split(" ")[2];
+    classePopup(prenom, nom, id);
+});
+
+function classePopup(prenom, nom, id) {
+    document.getElementById('classePopup').style.display = "flex";
+    document.getElementById("changeClasseTitre").textContent = `Choisir une nouvelle classe pour ${prenom} ${nom} :`
+    socket.emit("getClasseList", {}, function (err, responseData) {
+        if (err) {
+            alert(err);
+        } else {
+            let div = document.getElementById("popupList");
+            div.innerHTML = "";
+            for (let i = 0; i < responseData[0].length; i++) {
+                let elt = document.createElement("h5");
+                div.appendChild(elt);
+                elt.id = `${responseData[0][i]}`;
+                elt.className = "classeListElt";
+                elt.textContent = responseData[0][i];
+                elt.addEventListener('click', function () {
+                    socket.emit("changeValue", [id, "classe", elt.id], function(err) {
+                        if (err === null) {
+                            document.getElementById('classePopup').style.display = "none";
+                            alert(`${prenom} ${nom} a été déplacé vers la classe "${responseData[0][i]}."`)
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+                });
+            }
+        }
+    });
+}
+
 
 document.getElementById("b-logout").addEventListener("click", function () {
         document.location.href = "/";
@@ -413,7 +490,7 @@ function refreshClasseList() { // l'eltId est le nom de la classe, l'id seul est
                 elt.className = "classeListElt";
                 elt.textContent = "Nom de la classe : " + responseData[0][i];
             }
-            addClassesEvent(responseData);
+            addClassesEvent();
         }
     });
 }
@@ -423,13 +500,14 @@ function addClassesEvent() {
     for (let i = 0; i < classesButtons.length; i++) {
         classesButtons[i].addEventListener("click", function () {
             showClasseDetails(classesButtons[i].id);
+            document.getElementById("aucun-apercu3").style.display = "none";
+            document.getElementById("apercu-classe").style.display = "none";
+            document.getElementById("classeChargement").style.display = "flex";
         });
     }
 }
 
 function showClasseDetails(id) {
-    //document.getElementById("aucun-apercu3").style.display = "none";
-    //document.getElementById("classinfos-div").style.display = "block";
     socket.emit("getClasseDetails", id, function (err, res) {
         if (err) {
             alert(err);
@@ -454,16 +532,18 @@ function classeElevesList(id) {
             for (let i = 0; i < responseData[0].length; i++) {
                 let elt = document.createElement("h5");
                 div.appendChild(elt);
-                elt.id = `ce${responseData[0][i]}`;
+                elt.id = `ce-${responseData[2][i]}`;
                 elt.className = "h5 celistElt";
                 elt.textContent = i+1 + ". " + responseData[0][i] + " " + responseData[1][i];
                 elt.addEventListener('click', function () {
                     document.getElementById('elevePopup').style.display = "flex";
-                    document.getElementById('popupName').textContent = responseData[0][i] + " " + responseData[1][i];
+                    document.getElementById('popupName').textContent = responseData[0][i] + " " + responseData[1][i] + " (" + responseData[2][i] + ")";
                     hidePopupFcts();
                     document.getElementById("popupButtons").style.display = "flex";
                 });
             }
+            document.getElementById("classeChargement").style.display = "none";
+            document.getElementById("apercu-classe").style.display = "flex";
         }
     });
 }
@@ -530,11 +610,15 @@ document.getElementById("createClasse").addEventListener("click", function () {
     }
 });
 
-/*document.getElementById("moveEleve").addEventListener("click", function () {
-    hidePopupFcts();
-    document.getElementById("popupMoveEleve").style.display = "flex";
+document.getElementById("moveEleve").addEventListener("click", function () {
+    let prenomNom = document.getElementById("popupName").textContent.split(/[ ()]+/);
+    let prenom = prenomNom[0];
+    let nom = prenomNom[1];
+    let id = prenomNom[2];
+    document.getElementById("elevePopup").style.display = "none";
+    classePopup(prenom, nom, id);
 });
-
+/*
 document.getElementById("moveEleveConfirm").addEventListener("click", function () {
     let classe = document.getElementById("popupClasseName").value;
     if (classe.length > 0) {
@@ -621,6 +705,14 @@ document.getElementById("transferClasseButton").addEventListener("click", functi
     }
 });
 
+document.getElementById("updatePassword").addEventListener("click", function () {
+    let uname = document.getElementById("infos-uname").textContent;
+    socket.emit('updatePassword', uname, function (err) {
+       if (err) {
+           alert(err);
+       }
+    });
+});
 document.getElementById("searchButton").addEventListener("click", function () {
     let recherche = document.getElementById("searchBar").value ;
     if (recherche.length > 0) {
@@ -657,4 +749,19 @@ document.getElementById("searchButton").addEventListener("click", function () {
             }
         });
     }
+});
+
+document.getElementById("paramsInfos").addEventListener('click', function () {
+    document.getElementById("paramsInfosPopup").style.display = 'flex';
+    document.getElementById("appVersion").textContent = appVersion;
+    document.getElementById("dateLastUpdate").textContent = dateLastUpdate;
+    socket.emit("getDbVersion", {}, function (err, responseData) {
+        if (err) {
+            alert(JSON.stringify(err));
+        } else {
+            document.getElementById("dbVersion").textContent = responseData[0];
+            document.getElementById("sessionIp").textContent = responseData[1];
+        }
+    })
+    document.getElementById("sessionOpenTime").textContent = openingTime.toTimeString().split(' ')[0];
 });

@@ -40,10 +40,10 @@ function refreshPage(page) {
 }
 
 document.getElementById("login").addEventListener("click", function () {
-    document.location.href = "loginpage";
+    document.location.href = "login";
 })
 
-document.getElementById("logout").addEventListener("click", function () {
+/*document.getElementById("logout").addEventListener("click", function () {
     document.location.href = "logout";
 })
 
@@ -51,7 +51,7 @@ socket.on("authcheck", function (data) {
     alert(data);
 });
 
-/*function checkLogin() {
+function checkLogin() {
     socket.emit("checkLogin", {}, function(err, responseData) {
         if (err === null) {
             if (responseData) {

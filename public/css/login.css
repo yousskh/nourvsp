@@ -41,7 +41,7 @@ body{
     bottom: -80px;
 }
 .form {
-    height: 500px;
+    height: 510px;
     width: 400px;
     background-color: rgba(255,255,255,0.13);
     position: absolute;
@@ -131,4 +131,12 @@ button{
 
 #checkCredentials, #createAccount {
     color: #080710;
+}
+
+h6, #error {
+    font-size: 14px;
+    color: red;
+    margin: 8px;
+    text-align: center;
+    display: none;
 }

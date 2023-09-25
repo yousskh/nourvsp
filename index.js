@@ -21,11 +21,11 @@ const con = mysql.createConnection({
 
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
-    host: 'nourvsp.online',
+    host: 'nour-vsp.online',
     port: 465,
     secure: true,
     auth: {
-        user: 'invitation@nourvsp.online',
+        user: 'invitation@nour-vsp.online',
         pass: 'nourAssoMail'
     }
 });
@@ -37,7 +37,7 @@ con.connect(function(err) {
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/adminmenu', (req, res) => {
+app.get('/admin', (req, res) => {
     let authkey = req.query.authkey;
     if (authkey) {
         con.query("SELECT EXISTS (SELECT * FROM adminauth WHERE id = ?)", authkey, function (err, result) {
@@ -45,7 +45,7 @@ app.get('/adminmenu', (req, res) => {
             if (err) {
                 res(err);
             } else if (newData === "1") {
-                res.sendFile(__dirname + '/admin.html');
+                res.sendFile(__dirname + '/admin2.html');
             } else {
                 res.sendFile(__dirname + '/refused.html');
             }
@@ -64,7 +64,11 @@ app.get('/index', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/loginpage', (req, res) => {
+app.get('/designtest', (req, res) => {
+    res.sendFile(__dirname + '/refused.html');
+});
+
+app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/login.html');
 });
 
@@ -76,10 +80,14 @@ server.listen(PORT, () => {
     console.log(`Server started | listening on ${PORT}`);
 });
 
+
 io.on('connection', (socket) => {
-    console.log("[CONNECTION] New user connected");
+    let adresse = socket.request.connection.remoteAddress;
+    dbLog("connexion", "utilisateur connecté au site", adresse);
+    console.log(`[CONNECTION] New user connected`);
 
     socket.on("disconnect", () => {
+        dbLog("connexion", "utilisateur déconnecté du site", adresse);
         console.log("[CONNECTION] User disconnected");
     });
 
@@ -87,7 +95,6 @@ io.on('connection', (socket) => {
         let sql = "INSERT INTO eleves (prenom, nom, age, classe, mail, tel) VALUES (?, ?, ?, ?, ?, ?)";
         con.query(sql, [data[0], data[1], data[2], data[3], data[4], data[5]], function (err) {
             if (err) {
-                console.log(JSON.stringify(err));
                 switch (err["code"]) {
                     case "ER_TRUNCATED_WRONG_VALUE_FOR_FIELD":
                         res("Valeur inattendue pour un champ")
@@ -96,6 +103,7 @@ io.on('connection', (socket) => {
                         res(err["code"]);
                 }
             } else {
+                dbLog("élèves", `élève ajouté à la base de données : ${data[0]} ${data[1]} ${data[2]} ${data[3]} ${data[4]} ${data[5]}`, adresse);
                 res(null);
             }
         });
@@ -201,13 +209,16 @@ io.on('connection', (socket) => {
         console.log("[AUTH] Checking credentials")
         let sql = "SELECT pwd FROM users WHERE uname = ?";
         con.query(sql, data[0], async function (err, queryRes) {
-            if (err || queryRes.length < 1) {
-                res("Identifiants invalides.");
+            if (err) {
+                res(err);
+            } else if (queryRes.length < 1){
+                res("Identifiant ou mot de passe invalide.")
             } else {
                 let hash = queryRes[0]["pwd"];
                 let match = await bcrypt.compare(data[1], hash);
                     if (match) {
-                        console.log("It matches!");
+                        console.log("[AUTH] Connection successful");
+                        dbLog("auth", `utilisateur identifié : ${data[0]}`, adresse)
                         con.query("SELECT type, permissionLevel FROM users WHERE uname = ? AND statut = 'confirme'", data[0], function (err, result) {
                             if (err) {
                                 res(err);
@@ -217,11 +228,11 @@ io.on('connection', (socket) => {
                                 let id = randId();
                                 switch (re) {
                                     case "admin":
-                                        con.query("INSERT INTO adminauth (id, permissionLevel, date) VALUES (?, ?, NOW())", [id, permlvl], function (err) {
+                                        con.query("INSERT INTO adminauth (id, uname, permissionLevel, date) VALUES (?, ?, ?, NOW())", [id, data[0], permlvl], function (err) {
                                             if (err) {
                                                 res(err);
                                             } else {
-                                                res(null, ["adminmenu", id]);
+                                                res(null, ["admin", id]);
                                             }
                                         });
                                         break;
@@ -249,6 +260,7 @@ io.on('connection', (socket) => {
                         });
                     } else {
                         console.log("Invalid password!");
+                        dbLog("auth", `tentative de connexion échouée (mot de passe invalide) : ${data[0]}`, adresse)
                         res("Identifiants invalides.");
                     }
             }
@@ -287,6 +299,29 @@ io.on('connection', (socket) => {
                 });
             }
         });
+    });
+
+    socket.on("updatePassword", function (data, res) { //data : 0 = uname, 1 = destinataire, 2 = type (parent..), 3 = custom text
+        console.log("[AUTH] Sending mail for password recovery");
+        let creationId = randId();
+            con.query("UPDATE users SET statut = 'recuperation', inviteid = ? WHERE  uname = ?", [creationId, data], function (err) {
+                if (err) {
+                    res(err);
+                } else {
+                    con.query("SELECT type, mail FROM users WHERE uname = ?", data, function (err, resp) {
+                        let type = resp[0]["type"];
+                        let dest = resp[0]["mail"];
+                        let customtext = `Ceci est un message automatique, ne pas y répondre.
+
+Cliquez sur le lien suivant pour réinitialiser votre mot de passe sur la plateforme de l'Association Nour.
+>> [lien] <<
+Ne partagez pas ce lien.`;
+                        let link = "http://localhost:3000/invitation?id=" + creationId;
+                        sendMail(dest, type, link, customtext); // dest type lien customtext
+                        res(null, "Mail envoyé, utilisateur ajouté dans la liste d'attente.");
+                    });
+                }
+            });
     });
 
     socket.on("createAccount", function (data, res) {
@@ -393,11 +428,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on("getPermissionLevel", function (data, res) {
-        con.query("SELECT permissionLevel FROM adminauth WHERE id = ?", data, function (err, resp) {
+        con.query("SELECT permissionLevel, uname FROM adminauth WHERE id = ?", data, function (err, resp) {
             if (err) {
                 res(JSON.stringify(err));
             } else {
-                res(null, resp[0]["permissionLevel"]);
+                res(null, [resp[0]["permissionLevel"], resp[0]["uname"]]);
             }
         });
     });
@@ -473,6 +508,29 @@ io.on('connection', (socket) => {
             }
         });
     });
+
+    socket.on("getDbVersion", function (data, res) {
+        let sql = "SELECT * FROM globalSettings WHERE name = 'dbversion'";
+        con.query(sql, function (err, resp) {
+            if (err) {
+                res(err);
+            } else {
+                console.log(resp)
+                res(null, [resp[0]["value"], adresse]);
+            }
+        });
+    });
+
+    socket.on("getApercuInfos", function (data, res) {
+        let sql = "SELECT * FROM eleves; SELECT * from classes; SELECT * FROM users";
+        con.query(sql, function (err, reps) {
+            if (err) {
+                res(err);
+            } else {
+                res(null, [reps[0].length, reps[1].length, reps[2].length]);
+            }
+        });
+    });
 });
 
 
@@ -493,11 +551,13 @@ function transformClasseList(data) {
 function transformClasseElevesList(data) {
     let prenoms = [];
     let noms = [];
+    let ids = [];
     for (let i = 0; i < data.length; i++) {
         prenoms.push(data[i]["prenom"]);
         noms.push(data[i]["nom"]);
+        ids.push(data[i]["id"]);
     }
-    return [prenoms, noms];
+    return [prenoms, noms, ids];
 }
 function transformUserInfos(data) {
     let type = data[0]["type"];
@@ -577,7 +637,7 @@ setInterval(clearAuth, 60000);
 
 function sendMail(dest, type, lien, customText) {
     let mailOptions = {
-        from: 'Association Nour <invitation@nourvsp.online>',
+        from: 'Association Nour <invitation@nour-vsp.online>',
         to: dest,
         subject: "Création de votre compte pour l'Association Nour",
         text:
@@ -614,4 +674,13 @@ function randId() {
         str += characters[Math.floor(Math.random() * 16)]
     }
     return str;
+}
+
+function dbLog(type, desc, sender) {
+    let sql = "INSERT INTO logs (type, description, sender) VALUES (?, ?, ?)"
+    con.query(sql, [type, desc, sender], function (err) {
+       if (err) {
+           console.log("Error writing log into database : " + err);
+       }
+    });
 }
